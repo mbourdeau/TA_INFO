@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<meta charset="UTF-8">
+
+<body>
+<h1>Bienvenue à l'animalerie !</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<h2>Tableau de bord</h2>
+{% if animal_list %}
+    <ul>
+    {% for animal in animal_list %}
+        <table>
+            <tr>
+                <td>{{ animal.NAME }}</td>
+                <td>{{ animal.ETAT }}</td>
+                <td>{{ animal.LIEU }}</td>
+            </tr>
+        </table>
+    {% endfor %}
+    </ul>
+
+{% if action_list %}
+<h2>Actions</h2>
+<h4>Que voulez-vous faire ?</h4>
+
+<form action="{% url 'action' %}" method="post">
+{% csrf_token %}
+<ul>
+{% for action in action_list %}
+    <input type="radio" name="actions" id="actions{{ forloop.counter }}" value="{{ action }}">
+    <label for="actions{{ forloop.counter }}">{{ action }}</label><br>
+{% endfor %}
+</ul>
+<h4>pour ?</h4>
+<ul>
+{% for animal in animal_list %}
+    <input type="radio" name="id_animal" id="id_animal{{ forloop.counter }}" value="{{ animal.NAME }}">
+    <label for="id_animal{{ forloop.counter }}">{{ animal.NAME }}</label><br>
+{% endfor %}
+</ul>
+
+<br/>
+<input type="submit" value="Vote">
+</form>
+
+{% else %}
+    <p>No action</p>
+{% endif %}
+
+
+{% else %}
+    <p>No animal here</p>
+{% endif %}
+</body>
+</html>
